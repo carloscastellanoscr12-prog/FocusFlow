@@ -2,533 +2,288 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FocusFlow</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      min-height: 100vh;
-      transition: all 0.3s;
-    }
-    body.light {
-      background: #f0f4f8;
-      color: #1a202c;
-    }
+    body { font-family: -apple-system, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
 
-    /* HEADER */
-    .header {
-      background: #4ade80;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    header {
+      background: #16213e; padding: 16px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid #0f3460;
     }
-    .header-left { display: flex; align-items: center; gap: 10px; }
-    .header-title { font-weight: 800; font-size: 18px; color: #000; letter-spacing: -0.5px; }
-    .header-sub { font-size: 11px; color: #1a4a2a; }
-    .header-right { display: flex; align-items: center; gap: 10px; }
-    .streak-badge {
-      background: rgba(0,0,0,0.15);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      color: #000;
-      font-weight: 700;
-    }
-    .dark-toggle {
-      background: rgba(0,0,0,0.15);
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    header h1 { font-size: 20px; color: #e94560; }
+    header p { font-size: 12px; color: #aaa; }
+    header button { background: #0f3460; border: none; color: #eee; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; }
 
-    /* MAIN */
-    .main { max-width: 480px; margin: 0 auto; padding: 20px 16px; }
+    main { max-width: 480px; margin: 0 auto; padding: 16px; }
+
+    .card { background: #16213e; border-radius: 10px; padding: 16px; margin-bottom: 14px; border: 1px solid #0f3460; }
+    .card h2 { font-size: 15px; color: #e94560; margin-bottom: 12px; }
 
     /* TIMER */
-    .timer-card {
-      background: #161b22;
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 16px;
-      border: 1px solid #30363d;
-      text-align: center;
-    }
-    body.light .timer-card { background: #fff; border-color: #e2e8f0; }
-    .timer-label { font-size: 12px; color: #7d8590; margin-bottom: 16px; letter-spacing: 2px; text-transform: uppercase; }
-    .timer-circle { position: relative; width: 120px; height: 120px; margin: 0 auto 16px; }
-    .timer-circle svg { transform: rotate(-90deg); }
-    .timer-time {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 22px; font-weight: 800;
-      font-variant-numeric: tabular-nums;
-    }
-    .timer-custom {
-      display: flex; gap: 8px; align-items: center;
-      justify-content: center; margin-bottom: 12px;
-    }
-    .timer-custom input {
-      width: 60px; background: #1c2330; border: 1px solid #30363d;
-      border-radius: 8px; padding: 6px 8px; color: #e6edf3;
-      font-size: 14px; font-family: 'DM Sans', sans-serif;
-      text-align: center; outline: none;
-    }
-    body.light .timer-custom input { background: #e8f0fe; border-color: #e2e8f0; color: #1a202c; }
-    .timer-custom label { font-size: 12px; color: #7d8590; }
-    .btn-set-time {
-      background: #1c2330; color: #e6edf3; border: none;
-      border-radius: 8px; padding: 6px 12px;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-    }
-    body.light .btn-set-time { background: #e8f0fe; color: #1a202c; }
-    .timer-buttons { display: flex; gap: 8px; justify-content: center; }
-    .btn-start {
-      background: #4ade80; color: #000; border: none;
-      border-radius: 12px; padding: 10px 24px;
-      font-weight: 700; font-size: 14px; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .btn-reset {
-      background: #1c2330; color: #e6edf3; border: none;
-      border-radius: 12px; padding: 10px 16px;
-      font-weight: 600; font-size: 14px; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-    }
-    body.light .btn-reset { background: #e8f0fe; color: #1a202c; }
+    .timer-num { font-size: 52px; font-weight: bold; text-align: center; color: #fff; margin: 8px 0; }
+    .timer-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+    .timer-row label { font-size: 13px; color: #aaa; }
+    .timer-row input { width: 50px; background: #0f3460; border: 1px solid #444; border-radius: 6px; padding: 5px; color: #eee; font-size: 14px; text-align: center; outline: none; }
+    .btn-row { display: flex; gap: 8px; justify-content: center; }
+    .btn-blue { background: #0f3460; color: #eee; border: none; border-radius: 8px; padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-red { background: #e94560; color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
     /* EMERGENCY */
-    .btn-emergency {
-      width: 100%;
-      background: linear-gradient(135deg, #f87171, #fb923c);
-      color: #fff; border: none;
-      border-radius: 16px; padding: 18px;
-      font-weight: 800; font-size: 16px; cursor: pointer;
-      margin-bottom: 16px;
-      font-family: 'DM Sans', sans-serif;
-      box-shadow: 0 4px 20px rgba(248,113,113,0.3);
-    }
-    .emergency-result {
-      background: rgba(248,113,113,0.1);
-      border: 1px solid rgba(248,113,113,0.3);
-      border-radius: 16px; padding: 20px;
-      margin-bottom: 16px; text-align: center;
-      display: none;
-    }
-    .emergency-result.show { display: block; }
-    .emergency-result-label { font-size: 12px; color: #7d8590; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-    .emergency-result-text { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
-    .btn-done {
-      background: #1c2330; border: none; border-radius: 8px;
-      padding: 8px 16px; cursor: pointer; color: #e6edf3; font-size: 13px;
-      font-family: 'DM Sans', sans-serif;
-    }
-    body.light .btn-done { background: #e8f0fe; color: #1a202c; }
+    .btn-emergency { width: 100%; background: #e94560; color: #fff; border: none; border-radius: 10px; padding: 16px; font-size: 15px; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+    .emergency-result { display: none; background: rgba(233,69,96,0.15); border: 1px solid #e94560; border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 14px; }
+    .emergency-result p { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+    .emergency-result h3 { font-size: 17px; margin-bottom: 10px; }
+    .btn-small { background: #0f3460; border: none; color: #eee; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
 
-    /* MODULE TABS */
-    .module-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-    .module-tab {
-      flex: 1; background: #161b22; color: #e6edf3;
-      border: 1px solid #30363d; border-radius: 14px;
-      padding: 12px 8px; cursor: pointer;
-      font-weight: 600; font-size: 12px;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 4px;
-      transition: all 0.2s;
-      font-family: 'DM Sans', sans-serif;
-    }
-    body.light .module-tab { background: #fff; color: #1a202c; border-color: #e2e8f0; }
-    .module-tab.active { background: #60a5fa; color: #000; border-color: #60a5fa; }
-    .module-tab span { font-size: 20px; }
+    /* TABS */
+    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tab { flex: 1; background: #16213e; border: 1px solid #0f3460; color: #aaa; border-radius: 8px; padding: 10px 4px; cursor: pointer; font-size: 11px; font-weight: 600; text-align: center; }
+    .tab span { display: block; font-size: 18px; margin-bottom: 3px; }
+    .tab.active { background: #0f3460; color: #fff; border-color: #e94560; }
 
-    /* MODULE CONTENT */
-    .module-content {
-      background: #161b22; border-radius: 16px;
-      padding: 20px; margin-bottom: 16px;
-      border: 1px solid #30363d; display: none;
-    }
-    body.light .module-content { background: #fff; border-color: #e2e8f0; }
-    .module-content.show { display: block; }
-    .module-title { font-weight: 700; margin-bottom: 12px; font-size: 15px; }
-    .module-sub { font-size: 13px; color: #7d8590; margin-bottom: 12px; }
+    .module { display: none; }
+    .module.show { display: block; }
 
-    /* BRAIN DUMP */
-    .brain-textarea {
-      width: 100%; background: #1c2330; border: 1px solid #30363d;
-      border-radius: 12px; padding: 14px; color: #e6edf3;
-      font-size: 15px; resize: none; min-height: 80px;
-      outline: none; font-family: 'DM Sans', sans-serif;
-    }
-    body.light .brain-textarea { background: #e8f0fe; border-color: #e2e8f0; color: #1a202c; }
-    .btn-save {
-      width: 100%; background: #4ade80; color: #000; border: none;
-      border-radius: 10px; padding: 10px 20px; font-weight: 700;
-      font-size: 14px; cursor: pointer; margin-top: 10px;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .brain-list { margin-top: 16px; }
-    .brain-item {
-      background: #1c2330; border-radius: 10px; padding: 10px 12px;
-      margin-bottom: 6px; font-size: 14px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    body.light .brain-item { background: #e8f0fe; }
-    .btn-remove { background: none; border: none; cursor: pointer; color: #7d8590; font-size: 16px; }
+    /* BRAIN */
+    textarea { width: 100%; background: #0f3460; border: 1px solid #444; border-radius: 8px; padding: 10px; color: #eee; font-size: 14px; resize: none; min-height: 75px; outline: none; }
+    .btn-green { background: #2ecc71; color: #000; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; }
+    .dump-item { background: #0f3460; border-radius: 6px; padding: 8px 12px; margin-top: 6px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+    .dump-item button { background: none; border: none; color: #e94560; font-size: 16px; cursor: pointer; }
 
     /* SUGGEST */
-    .time-buttons { display: flex; gap: 8px; margin-bottom: 16px; }
-    .btn-time {
-      flex: 1; background: #1c2330; color: #e6edf3; border: none;
-      border-radius: 12px; padding: 14px 8px;
-      font-weight: 700; font-size: 14px; cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-    }
-    body.light .btn-time { background: #e8f0fe; color: #1a202c; }
-    .btn-time.active { background: #a78bfa; color: #fff; }
-    .suggestion-box {
-      background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3);
-      border-radius: 12px; padding: 16px; text-align: center; display: none;
-    }
-    .suggestion-box.show { display: block; }
-    .suggestion-label { font-size: 12px; color: #7d8590; margin-bottom: 8px; }
-    .suggestion-text { font-size: 17px; font-weight: 700; }
-    .btn-another { background: none; border: none; color: #a78bfa; cursor: pointer; font-size: 13px; margin-top: 10px; font-weight: 600; font-family: 'DM Sans', sans-serif; }
+    .time-btns { display: flex; gap: 8px; margin-bottom: 10px; }
+    .btn-time { flex: 1; background: #0f3460; color: #eee; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-time.active { background: #9b59b6; color: #fff; }
+    .sugg-box { display: none; background: rgba(155,89,182,0.15); border: 1px solid #9b59b6; border-radius: 8px; padding: 14px; text-align: center; }
+    .sugg-box p { font-size: 11px; color: #aaa; margin-bottom: 6px; }
+    .sugg-box h3 { font-size: 16px; margin-bottom: 8px; }
+    .btn-another { background: none; border: none; color: #9b59b6; cursor: pointer; font-size: 13px; font-weight: 600; }
 
     /* PLAN */
-    .plan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-    .plan-count { font-size: 13px; color: #4ade80; font-weight: 700; }
-    .task-row {
-      display: flex; align-items: center; gap: 12px;
-      background: #1c2330; border-radius: 12px; padding: 12px;
-      margin-bottom: 10px; border: 1px solid #30363d;
-      transition: all 0.2s;
-    }
-    body.light .task-row { background: #e8f0fe; border-color: #e2e8f0; }
-    .task-row.done { background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.2); }
-    .task-check {
-      width: 24px; height: 24px; border-radius: 50%;
-      border: 2px solid #30363d; background: transparent;
-      cursor: pointer; flex-shrink: 0; display: flex;
-      align-items: center; justify-content: center;
-      color: #000; font-size: 12px; transition: all 0.2s;
-    }
-    .task-check.checked { background: #4ade80; border-color: #4ade80; }
-    .task-input {
-      flex: 1; background: none; border: none; color: #e6edf3;
-      font-size: 15px; outline: none; font-family: 'DM Sans', sans-serif;
-    }
-    body.light .task-input { color: #1a202c; }
-    .task-input.done { text-decoration: line-through; opacity: 0.5; }
-    .celebration {
-      text-align: center; padding: 16px;
-      background: rgba(74,222,128,0.1); border-radius: 12px;
-      margin-top: 8px; display: none;
-    }
-    .celebration.show { display: block; }
-    .footer { text-align: center; font-size: 12px; color: #7d8590; margin-top: 8px; }
+    .plan-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .plan-count { color: #2ecc71; font-weight: 700; font-size: 14px; }
+    .task-row { display: flex; align-items: center; gap: 10px; background: #0f3460; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+    .task-row.done { opacity: 0.5; }
+    .chk { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #555; background: transparent; cursor: pointer; font-size: 11px; color: #000; flex-shrink: 0; }
+    .chk.checked { background: #2ecc71; border-color: #2ecc71; }
+    .task-input { flex: 1; background: none; border: none; color: #eee; font-size: 14px; outline: none; }
+    .task-input.done { text-decoration: line-through; }
+    .win { display: none; text-align: center; background: rgba(46,204,113,0.15); border: 1px solid #2ecc71; border-radius: 8px; padding: 12px; margin-top: 8px; }
+
+    .note { text-align: center; font-size: 12px; color: #555; padding: 12px; }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-left">
-      <span style="font-size:24px">🧠</span>
-      <div>
-        <div class="header-title">FocusFlow</div>
-        <div class="header-sub">Tu cerebro externo</div>
-      </div>
+<header>
+  <div>
+    <h1>🧠 FocusFlow</h1>
+    <p>App MVP para estudiantes con TDAH</p>
+  </div>
+  <button onclick="toggleDark()" id="darkBtn">☀️ Modo claro</button>
+</header>
+
+<main>
+
+  <div class="card">
+    <h2>⏱ Temporizador Pomodoro</h2>
+    <div class="timer-num" id="timerDisplay">25:00</div>
+    <div class="timer-row">
+      <label>Minutos:</label>
+      <input type="number" id="customMin" value="25" min="1" max="120">
+      <button class="btn-small" onclick="applyTime()">Aplicar</button>
     </div>
-    <div class="header-right">
-      <div class="streak-badge">🔥 <span id="streak">3</span> días</div>
-      <button class="dark-toggle" onclick="toggleDark()">☀️</button>
+    <div class="btn-row">
+      <button class="btn-red" id="btnStart" onclick="toggleTimer()">▶ Iniciar</button>
+      <button class="btn-blue" onclick="resetTimer()">↺ Reiniciar</button>
     </div>
   </div>
 
-  <div class="main">
-
-    <!-- TIMER -->
-    <div class="timer-card">
-      <div class="timer-label" id="timerLabel">⚡ Sesión de Foco</div>
-      <div class="timer-circle">
-        <svg width="120" height="120">
-          <circle cx="60" cy="60" r="45" fill="none" stroke="#1c2330" stroke-width="8"/>
-          <circle id="timerArc" cx="60" cy="60" r="45" fill="none" stroke="#4ade80"
-            stroke-width="8" stroke-dasharray="282.6" stroke-dashoffset="282.6"
-            stroke-linecap="round" style="transition: stroke-dashoffset 1s linear"/>
-        </svg>
-        <div class="timer-time" id="timerDisplay">25:00</div>
-      </div>
-      <div class="timer-custom">
-        <label>⏱ Minutos:</label>
-        <input type="number" id="customMinutes" value="25" min="1" max="120">
-        <button class="btn-set-time" onclick="setCustomTime()">Aplicar</button>
-      </div>
-      <div class="timer-buttons">
-        <button class="btn-start" id="btnStart" onclick="toggleTimer()">▶ Iniciar</button>
-        <button class="btn-reset" onclick="resetTimer()">↺</button>
-      </div>
-    </div>
-
-    <!-- EMERGENCY -->
-    <button class="btn-emergency" onclick="getEmergencyTask()">🆘 PARÁLISIS DE ACCIÓN — ¡AYÚDAME!</button>
-    <div class="emergency-result" id="emergencyResult">
-      <div class="emergency-result-label">Haz SOLO esto ahora:</div>
-      <div class="emergency-result-text" id="emergencyText"></div>
-      <button class="btn-done" onclick="hideEmergency()">✓ Listo</button>
-    </div>
-
-    <!-- MODULE TABS -->
-    <div class="module-tabs">
-      <button class="module-tab" id="tab-brain" onclick="setModule('brain')">
-        <span>💭</span>Vaciado
-      </button>
-      <button class="module-tab" id="tab-suggest" onclick="setModule('suggest')">
-        <span>🎯</span>¿Qué hago?
-      </button>
-      <button class="module-tab" id="tab-plan" onclick="setModule('plan')">
-        <span>📋</span>Plan de Hoy
-      </button>
-    </div>
-
-    <!-- BRAIN DUMP -->
-    <div class="module-content" id="module-brain">
-      <div class="module-title">💭 Vacía tu cerebro</div>
-      <div class="module-sub">Anota lo que está dando vueltas en tu cabeza</div>
-      <textarea class="brain-textarea" id="brainInput" placeholder="Escribe aquí... (Enter para guardar)"
-        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();saveBrain()}"></textarea>
-      <button class="btn-save" onclick="saveBrain()">Guardar pensamiento</button>
-      <div class="brain-list" id="brainList"></div>
-    </div>
-
-    <!-- SUGGEST -->
-    <div class="module-content" id="module-suggest">
-      <div class="module-title">🎯 ¿Cuánto tiempo tienes?</div>
-      <div class="time-buttons">
-        <button class="btn-time" id="time-5" onclick="getSuggestion(5)">5 min</button>
-        <button class="btn-time" id="time-15" onclick="getSuggestion(15)">15 min</button>
-        <button class="btn-time" id="time-30" onclick="getSuggestion(30)">30 min</button>
-      </div>
-      <div class="suggestion-box" id="suggestionBox">
-        <div class="suggestion-label">Haz esto:</div>
-        <div class="suggestion-text" id="suggestionText"></div>
-        <button class="btn-another" onclick="getSuggestion(currentTime)">🔄 Dame otra opción</button>
-      </div>
-    </div>
-
-    <!-- PLAN -->
-    <div class="module-content" id="module-plan">
-      <div class="plan-header">
-        <div class="module-title" style="margin-bottom:0">📋 Plan de Hoy</div>
-        <div class="plan-count" id="planCount">0/3</div>
-      </div>
-      <div class="module-sub">Solo 3 tareas. Prioriza lo más importante.</div>
-      <div class="task-row" id="row-0">
-        <button class="task-check" id="check-0" onclick="toggleTask(0)"></button>
-        <input class="task-input" id="task-0" placeholder="Tarea 1...">
-      </div>
-      <div class="task-row" id="row-1">
-        <button class="task-check" id="check-1" onclick="toggleTask(1)"></button>
-        <input class="task-input" id="task-1" placeholder="Tarea 2...">
-      </div>
-      <div class="task-row" id="row-2">
-        <button class="task-check" id="check-2" onclick="toggleTask(2)"></button>
-        <input class="task-input" id="task-2" placeholder="Tarea 3...">
-      </div>
-      <div class="celebration" id="celebration">
-        <div style="font-size:24px;margin-bottom:4px">🎉</div>
-        <div style="font-weight:700;color:#4ade80">¡Completaste todo!</div>
-        <div style="font-size:13px;color:#7d8590">Eso es una victoria enorme.</div>
-      </div>
-    </div>
-
-    <div class="footer">Un paso a la vez 💚</div>
+  <button class="btn-emergency" onclick="getTask()">🆘 PARÁLISIS DE ACCIÓN — ¡AYÚDAME!</button>
+  <div class="emergency-result" id="emergencyBox">
+    <p>HAZ SOLO ESTO AHORA:</p>
+    <h3 id="emergencyText"></h3>
+    <button class="btn-small" onclick="document.getElementById('emergencyBox').style.display='none'">✓ Listo</button>
   </div>
+
+  <div class="tabs">
+    <button class="tab" id="tab-brain" onclick="setTab('brain')"><span>💭</span>Vaciado</button>
+    <button class="tab" id="tab-suggest" onclick="setTab('suggest')"><span>🎯</span>¿Qué hago?</button>
+    <button class="tab" id="tab-plan" onclick="setTab('plan')"><span>📋</span>Plan de Hoy</button>
+  </div>
+
+  <div class="card module" id="module-brain">
+    <h2>💭 Vacía tu cerebro</h2>
+    <p style="font-size:13px;color:#aaa;margin-bottom:10px">Anota lo que está dando vueltas en tu cabeza</p>
+    <textarea id="brainInput" placeholder="Escribe aquí lo que tienes en mente..."></textarea>
+    <button class="btn-green" onclick="saveBrain()">Guardar pensamiento</button>
+    <div id="brainList"></div>
+  </div>
+
+  <div class="card module" id="module-suggest">
+    <h2>🎯 ¿Cuánto tiempo tienes?</h2>
+    <div class="time-btns">
+      <button class="btn-time" id="t5" onclick="getSugg(5)">5 min</button>
+      <button class="btn-time" id="t15" onclick="getSugg(15)">15 min</button>
+      <button class="btn-time" id="t30" onclick="getSugg(30)">30 min</button>
+    </div>
+    <div class="sugg-box" id="suggBox">
+      <p>Te sugiero hacer esto:</p>
+      <h3 id="suggText"></h3>
+      <button class="btn-another" onclick="getSugg(curTime)">🔄 Dame otra opción</button>
+    </div>
+  </div>
+
+  <div class="card module" id="module-plan">
+    <div class="plan-top">
+      <h2 style="margin:0">📋 Plan de Hoy</h2>
+      <span class="plan-count" id="planCount">0/3</span>
+    </div>
+    <p style="font-size:13px;color:#aaa;margin-bottom:10px">Solo 3 tareas. Prioriza lo más importante.</p>
+    <div class="task-row" id="row0"><button class="chk" id="chk0" onclick="toggleTask(0)"></button><input class="task-input" id="task0" placeholder="Tarea 1..."></div>
+    <div class="task-row" id="row1"><button class="chk" id="chk1" onclick="toggleTask(1)"></button><input class="task-input" id="task1" placeholder="Tarea 2..."></div>
+    <div class="task-row" id="row2"><button class="chk" id="chk2" onclick="toggleTask(2)"></button><input class="task-input" id="task2" placeholder="Tarea 3..."></div>
+    <div class="win" id="win">🎉 <strong>¡Completaste todo!</strong> ¡Excelente trabajo hoy!</div>
+  </div>
+
+</main>
+<p class="note">FocusFlow — Proyecto universitario MVP 2025</p>
 
 <script>
   // DARK MODE
-  let dark = true;
+  var darkMode = true;
   function toggleDark() {
-    dark = !dark;
-    document.body.classList.toggle('light', !dark);
-    document.querySelector('.dark-toggle').textContent = dark ? '☀️' : '🌙';
+    darkMode = !darkMode;
+    document.body.style.background = darkMode ? '#1a1a2e' : '#f0f0f0';
+    document.body.style.color = darkMode ? '#eee' : '#222';
+    document.getElementById('darkBtn').textContent = darkMode ? '☀️ Modo claro' : '🌙 Modo oscuro';
   }
 
   // TIMER
-  let timerSeconds = 25 * 60;
-  let timerRunning = false;
-  let timerMode = 'focus';
-  let timerInterval = null;
-  const circumference = 2 * Math.PI * 45;
+  var secs = 25 * 60;
+  var running = false;
+  var iv = null;
+  var mode = 'foco';
 
-  function updateTimerDisplay() {
-    const m = Math.floor(timerSeconds / 60);
-    const s = timerSeconds % 60;
+  function showTime() {
+    var m = Math.floor(secs / 60);
+    var s = secs % 60;
     document.getElementById('timerDisplay').textContent =
-      String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-    const total = timerMode === 'focus' ? 25*60 : 5*60;
-    const progress = 1 - timerSeconds / total;
-    const offset = circumference * (1 - progress);
-    document.getElementById('timerArc').style.strokeDashoffset = circumference - offset;
-    document.getElementById('timerArc').style.stroke = timerMode === 'focus' ? '#4ade80' : '#60a5fa';
+      (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function applyTime() {
+    if (running) return;
+    var min = parseInt(document.getElementById('customMin').value);
+    if (min >= 1 && min <= 120) { secs = min * 60; showTime(); }
   }
 
   function toggleTimer() {
-    timerRunning = !timerRunning;
-    document.getElementById('btnStart').textContent = timerRunning ? '⏸ Pausar' : '▶ Iniciar';
-    document.getElementById('btnStart').style.background = timerRunning ? '#f87171' : '#4ade80';
-    if (timerRunning) {
-      timerInterval = setInterval(() => {
-        timerSeconds--;
-        if (timerSeconds <= 0) {
-          timerRunning = false;
-          clearInterval(timerInterval);
-          timerMode = timerMode === 'focus' ? 'break' : 'focus';
-          timerSeconds = timerMode === 'focus' ? 25*60 : 5*60;
-          document.getElementById('timerLabel').textContent = timerMode === 'focus' ? '⚡ Sesión de Foco' : '☕ Descanso';
-          document.getElementById('btnStart').textContent = '▶ Iniciar';
-          document.getElementById('btnStart').style.background = '#4ade80';
+    running = !running;
+    var btn = document.getElementById('btnStart');
+    btn.textContent = running ? '⏸ Pausar' : '▶ Iniciar';
+    btn.style.background = running ? '#555' : '#e94560';
+    if (running) {
+      iv = setInterval(function() {
+        secs--;
+        if (secs <= 0) {
+          clearInterval(iv); running = false;
+          mode = mode === 'foco' ? 'descanso' : 'foco';
+          secs = mode === 'foco' ? 25*60 : 5*60;
+          btn.textContent = '▶ Iniciar';
+          btn.style.background = '#e94560';
+          alert(mode === 'foco' ? '¡Descanso terminado! A trabajar.' : '¡Tiempo! Descansa 5 minutos.');
         }
-        updateTimerDisplay();
+        showTime();
       }, 1000);
     } else {
-      clearInterval(timerInterval);
+      clearInterval(iv);
     }
   }
 
-  function setCustomTime() {
-    if (timerRunning) return;
-    const mins = parseInt(document.getElementById('customMinutes').value);
-    if (isNaN(mins) || mins < 1 || mins > 120) return;
-    timerSeconds = mins * 60;
-    timerMode = 'focus';
-    updateTimerDisplay();
-  }
-
   function resetTimer() {
-    clearInterval(timerInterval);
-    timerRunning = false;
-    timerMode = 'focus';
-    const mins = parseInt(document.getElementById('customMinutes').value) || 25;
-    timerSeconds = mins * 60;
+    clearInterval(iv); running = false; mode = 'foco';
+    secs = (parseInt(document.getElementById('customMin').value) || 25) * 60;
     document.getElementById('btnStart').textContent = '▶ Iniciar';
-    document.getElementById('btnStart').style.background = '#4ade80';
-    document.getElementById('timerLabel').textContent = '⚡ Sesión de Foco';
-    updateTimerDisplay();
+    document.getElementById('btnStart').style.background = '#e94560';
+    showTime();
   }
-
-  updateTimerDisplay();
 
   // EMERGENCY
-  const emergencyTasks = [
+  var tasks = [
     "Pon el temporizador en 2 minutos y abre el documento",
     "Escribe UNA sola palabra sobre el tema",
     "Lee únicamente el primer párrafo",
     "Escribe tu nombre y la fecha en el documento",
     "Toma agua y respira 5 veces profundo",
     "Cierra todas las pestañas innecesarias",
-    "Párate, estira los brazos 30 segundos y vuelve",
+    "Párate y estira los brazos por 30 segundos",
     "Silencia el celular y ponlo boca abajo"
   ];
-
-  function getEmergencyTask() {
-    const task = emergencyTasks[Math.floor(Math.random() * emergencyTasks.length)];
-    document.getElementById('emergencyText').textContent = task;
-    document.getElementById('emergencyResult').classList.add('show');
+  function getTask() {
+    document.getElementById('emergencyText').textContent = tasks[Math.floor(Math.random() * tasks.length)];
+    document.getElementById('emergencyBox').style.display = 'block';
   }
 
-  function hideEmergency() {
-    document.getElementById('emergencyResult').classList.remove('show');
-  }
-
-  // MODULES
-  let activeModule = null;
-  function setModule(id) {
-    document.querySelectorAll('.module-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.module-content').forEach(c => c.classList.remove('show'));
-    if (activeModule === id) {
-      activeModule = null;
-    } else {
-      activeModule = id;
-      document.getElementById('tab-' + id).classList.add('active');
-      document.getElementById('module-' + id).classList.add('show');
-    }
+  // TABS
+  var activeTab = null;
+  function setTab(id) {
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.module').forEach(function(m) { m.classList.remove('show'); });
+    if (activeTab === id) { activeTab = null; return; }
+    activeTab = id;
+    document.getElementById('tab-' + id).classList.add('active');
+    document.getElementById('module-' + id).classList.add('show');
   }
 
   // BRAIN DUMP
-  let brainDumps = [];
+  var dumps = [];
   function saveBrain() {
-    const input = document.getElementById('brainInput');
-    if (!input.value.trim()) return;
-    brainDumps.unshift({ text: input.value, id: Date.now() });
-    input.value = '';
-    renderBrainList();
+    var v = document.getElementById('brainInput').value.trim();
+    if (!v) return;
+    dumps.unshift({ text: v, id: Date.now() });
+    document.getElementById('brainInput').value = '';
+    renderDumps();
   }
-
-  function renderBrainList() {
-    const list = document.getElementById('brainList');
-    if (brainDumps.length === 0) { list.innerHTML = ''; return; }
-    list.innerHTML = '<div style="font-size:12px;color:#7d8590;margin-bottom:8px">Guardados:</div>' +
-      brainDumps.map(d => `
-        <div class="brain-item">
-          <span>${d.text}</span>
-          <button class="btn-remove" onclick="removeBrain(${d.id})">×</button>
-        </div>
-      `).join('');
+  function renderDumps() {
+    document.getElementById('brainList').innerHTML = dumps.map(function(d) {
+      return '<div class="dump-item"><span>' + d.text + '</span><button onclick="removeDump(' + d.id + ')">×</button></div>';
+    }).join('');
   }
-
-  function removeBrain(id) {
-    brainDumps = brainDumps.filter(d => d.id !== id);
-    renderBrainList();
+  function removeDump(id) {
+    dumps = dumps.filter(function(d) { return d.id !== id; });
+    renderDumps();
   }
 
   // SUGGEST
-  const suggestions = {
-    5: ["Lee el enunciado de una tarea","Organiza tu escritorio","Respira profundo 5 veces","Abre el documento que necesitas","Escribe una oración de introducción"],
-    15: ["Haz un resumen de una página","Responde un correo importante","Lee una sección corta","Haz 10 minutos de ejercicio","Organiza tus apuntes de hoy"],
-    30: ["Completa un ejercicio del libro","Estudia un tema específico","Escribe un párrafo completo","Revisa y corrige un trabajo","Haz una lectura con notas"]
+  var sugg = {
+    5: ["Lee el enunciado de una tarea","Organiza tu escritorio","Respira profundo 5 veces","Abre el documento","Escribe una oración"],
+    15: ["Haz un resumen de una página","Responde un correo","Lee una sección corta","Haz 10 min de ejercicio","Organiza tus apuntes"],
+    30: ["Completa un ejercicio","Estudia un tema","Escribe un párrafo","Revisa un trabajo","Haz una lectura con notas"]
   };
-  let currentTime = null;
-
-  function getSuggestion(time) {
-    currentTime = time;
-    document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('active'));
-    document.getElementById('time-' + time).classList.add('active');
-    const list = suggestions[time];
-    const text = list[Math.floor(Math.random() * list.length)];
-    document.getElementById('suggestionText').textContent = text;
-    document.getElementById('suggestionBox').classList.add('show');
+  var curTime = 5;
+  function getSugg(t) {
+    curTime = t;
+    document.querySelectorAll('.btn-time').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('t' + t).classList.add('active');
+    document.getElementById('suggText').textContent = sugg[t][Math.floor(Math.random() * sugg[t].length)];
+    document.getElementById('suggBox').style.display = 'block';
   }
 
   // PLAN
-  let completedTasks = [false, false, false];
-
+  var done = [false, false, false];
   function toggleTask(i) {
-    completedTasks[i] = !completedTasks[i];
-    const check = document.getElementById('check-' + i);
-    const row = document.getElementById('row-' + i);
-    const input = document.getElementById('task-' + i);
-    check.classList.toggle('checked', completedTasks[i]);
-    check.textContent = completedTasks[i] ? '✓' : '';
-    row.classList.toggle('done', completedTasks[i]);
-    input.classList.toggle('done', completedTasks[i]);
-    const count = completedTasks.filter(Boolean).length;
+    done[i] = !done[i];
+    document.getElementById('chk' + i).classList.toggle('checked', done[i]);
+    document.getElementById('chk' + i).textContent = done[i] ? '✓' : '';
+    document.getElementById('row' + i).classList.toggle('done', done[i]);
+    document.getElementById('task' + i).classList.toggle('done', done[i]);
+    var count = done.filter(function(d) { return d; }).length;
     document.getElementById('planCount').textContent = count + '/3';
-    document.getElementById('celebration').classList.toggle('show', count === 3);
+    document.getElementById('win').style.display = count === 3 ? 'block' : 'none';
   }
 </script>
 </body>

@@ -81,9 +81,9 @@
 <header>
   <div>
     <h1>🧠 FocusFlow</h1>
-    <p>App MVP para estudiantes con TDAH</p>
+
   </div>
-  <button onclick="toggleDark()" id="darkBtn">☀️ Modo claro</button>
+  
 </header>
 
 <main>
@@ -150,18 +150,9 @@
   </div>
 
 </main>
-<p class="note">FocusFlow — Proyecto universitario MVP 2025</p>
+
 
 <script>
-  // DARK MODE
-  var darkMode = true;
-  function toggleDark() {
-    darkMode = !darkMode;
-    document.body.style.background = darkMode ? '#1a1a2e' : '#f0f0f0';
-    document.body.style.color = darkMode ? '#eee' : '#222';
-    document.getElementById('darkBtn').textContent = darkMode ? '☀️ Modo claro' : '🌙 Modo oscuro';
-  }
-
   // TIMER
   var secs = 25 * 60;
   var running = false;
